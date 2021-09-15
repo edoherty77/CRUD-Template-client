@@ -25,9 +25,20 @@ function Chatroom(props) {
     setMessage('')
   }
 
+  const messagesList = messages.map((msg, index) => {
+    return (
+      <li>
+        {msg.username} - {msg.message}
+      </li>
+    )
+  })
+
   return (
     <div>
       <h1>{currentChatroom.name}</h1>
+      <ul>
+        {messagesList}
+      </ul>
       <div>
         <input type="text" value={message} onChange={text => handleChange(text)}/>
         <button type="submit" onClick={sendMessage}>Send</button>
