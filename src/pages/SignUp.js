@@ -16,8 +16,11 @@ function SignUp() {
 
   const signIn = async () => {
     const userInfo = {username, password}
-    await AuthModel.register(userInfo)
-    history.push('/home')
+    const newUser = await AuthModel.register(userInfo)
+    if(newUser) {
+      localStorage.setItem("username", newUser.data.username)
+      history.push('/home')
+    }
   }
   return (
     <div>

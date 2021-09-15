@@ -1,17 +1,19 @@
 import { Switch, Route } from 'react-router-dom'
 
-import Landing from '../pages/Landing'
+import SignIn from '../pages/SignIn'
 import Home from '../pages/Home'
 import SignUp from '../pages/SignUp'
 import Chatroom from '../pages/Chatroom'
+import Navbar from '../components/Navbar'
 
 export default (
   <div>
+    {/* <Navbar/> */}
     <Switch>
       <Route
         exact
         path="/"
-        render={(propsRouter) => <Landing {...propsRouter} />}
+        render={(propsRouter) => <SignIn {...propsRouter} />}
       />
       <Route
         path="/home"

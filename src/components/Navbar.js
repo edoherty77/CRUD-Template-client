@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import Routes from './config/Routes'
 import { Link, useHistory } from 'react-router-dom'
-import AuthModel from './models/auth'
 
-function App() {
+import AuthModel from '../models/auth'
+
+function Navbar() {
   const [user, setUser] = useState({username: ''})
   const history = useHistory()
   const checkForUser = async () => {
@@ -32,14 +32,11 @@ function App() {
       console.log(error)
     }
   }
-
-
   return (
     <div>
-      {user.username !== '' && <button type="submit" onClick={logout}>Logout</button>}
-      {Routes}
+      <button type="submit" onClick={logout}>Logout</button>
     </div>
   )
 }
 
-export default App
+export default Navbar

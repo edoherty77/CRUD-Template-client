@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import AuthModel from '../models/auth'
 
-function Landing() {
+function SignIn() {
   const history = useHistory()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -19,6 +19,7 @@ function Landing() {
     try {
       const foundUser = await AuthModel.login(userInfo)
       if(foundUser) {
+        await localStorage.setItem("username", foundUser.user.username)
         history.push('/home')
       }
 
@@ -46,4 +47,4 @@ function Landing() {
   )
 }
 
-export default Landing
+export default SignIn
