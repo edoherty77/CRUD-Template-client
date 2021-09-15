@@ -1,20 +1,10 @@
-import React, {useEffect} from 'react'
-import ChatroomModel from './models/chatroom'
+import React from 'react'
+import Routes from './config/routes'
 
 function App() {
-
-  const fetchData = async () => {
-    const chatrooms = await ChatroomModel.all()
-    console.log(chatrooms)
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, [])
-
   return (
     <div>
-      Hi
+      {Routes}
     </div>
   )
 }
