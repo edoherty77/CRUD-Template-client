@@ -11,17 +11,17 @@ function Home() {
     }
 
     const createChatroom = async () => {
+        let arr = chatrooms
         const obj = {name: newChatroom}
-        await ChatroomModel.create(obj)
+        let createdChatroom = await ChatroomModel.create(obj)
+        arr.push(createdChatroom.data)
+        setChatrooms([...arr])
+        setNewChatroom('')
     }
 
     const fetchChatrooms = async () => {
         const foundChatrooms = await ChatroomModel.all()
         setChatrooms(foundChatrooms.data)
-    }
-
-    const enterChatroom = (chatroom) => {
-        console.log(chatroom)
     }
 
     useEffect(() => {
@@ -42,8 +42,10 @@ function Home() {
             {chatRoomList}
             <div>
                 <h4>Create chatroom</h4>
-                <input type="text" value={newChatroom} onChange={(text) => handleChange(text)} />
-                <button onClick={createChatroom}>Submit</button>
+                <div>
+                    <input type="text" value={newChatroom} onChange={(text) => handleChange(text)} />
+                    <button onClick={createChatroom} type='submit'>Submit</button>
+                </div>
             </div>
         </div>
     )
