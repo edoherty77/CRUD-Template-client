@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
-import { Link } from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import AuthModel from '../models/auth'
 
 function SignUp() {
+  const history = useHistory()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const handleChange = (e, field) => {
@@ -15,8 +16,8 @@ function SignUp() {
 
   const signIn = async () => {
     const userInfo = {username, password}
-    const foundUser = await AuthModel.register(userInfo)
-    console.log('foundUser', foundUser)
+    await AuthModel.register(userInfo)
+    history.push('/home')
   }
   return (
     <div>

@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 import Landing from '../pages/Landing'
 import Home from '../pages/Home'
 import SignUp from '../pages/SignUp'
+import Chatroom from '../pages/Chatroom'
 
 export default (
   <div>
@@ -20,10 +21,10 @@ export default (
         path="/signup"
         render={(propsRouter) => <SignUp {...propsRouter} />}
       />
-      {/* <Route
-        path="/chatroom"
+      <Route
+        path="/chatroom/:name"
         render={(propsRouter) => <Chatroom {...propsRouter} />}
-      /> */}
+      />
     </Switch>
   </div>
 )

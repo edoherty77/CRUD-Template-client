@@ -3,7 +3,6 @@ const url = `http://localhost:4000/api/v1`
 
 export default class AuthModel {
   static register = async (userData) => {
-    console.log(userData)
     try {
       const newUser = await axios.post(`${url}/auth/register`, {
         method: 'POST',
@@ -19,7 +18,6 @@ export default class AuthModel {
   }
 
   static async login(credentials) {
-    console.log(credentials)
     const res = await fetch(`${url}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

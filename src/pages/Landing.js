@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import AuthModel from '../models/auth'
 
 function Landing() {
+  const history = useHistory()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const handleChange = (e, field) => {
@@ -17,7 +18,9 @@ function Landing() {
     const userInfo = {username, password}
     try {
       const foundUser = await AuthModel.login(userInfo)
-      console.log('foundUser', foundUser)
+      if(foundUser) {
+        history.push('/home')
+      }
 
     } catch(err) {
       console.log(err)
