@@ -1,9 +1,12 @@
 import React from 'react'
 
-export default function Landing() {
+function Home() {
     return (
         <div>
-            Hello
+            
         </div>
     )
 }
+
+export default Home
+
