@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Routes from './config/Routes'
-import { Link, useHistory } from 'react-router-dom'
+import {useHistory } from 'react-router-dom'
 import AuthModel from './models/auth'
 
 function App() {
   const [user, setUser] = useState({username: ''})
   const history = useHistory()
   const checkForUser = async () => {
-    console.log(user)
     try {
       const localUser = await localStorage.getItem('username')
       if (localUser)

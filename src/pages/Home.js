@@ -1,51 +1,55 @@
 import React, {useState, useEffect} from 'react'
-import ChatroomModel from '../models/chatroom'
 import { Link, useHistory } from 'react-router-dom'
 
+import {
+    useQuery,
+    useMutation,
+    useQueryClient,
+  } from 'react-query'
+
+import ChatroomModel from '../models/chatroom'
+
 function Home() {
+    const queryClient = useQueryClient()
+
     const [newChatroom, setNewChatroom] = useState('')
-    const [chatrooms, setChatrooms] = useState([])
 
     const handleChange = (e) => {
         setNewChatroom(e.target.value)
     }
 
-    const createChatroom = async () => {
-        let arr = chatrooms
-        const obj = {name: newChatroom}
-        let createdChatroom = await ChatroomModel.create(obj)
-        arr.push(createdChatroom.data)
-        setChatrooms([...arr])
-        setNewChatroom('')
-    }
-
-    const fetchChatrooms = async () => {
-        const foundChatrooms = await ChatroomModel.all()
-        setChatrooms(foundChatrooms.data)
-    }
-
-    useEffect(() => {
-        fetchChatrooms()
-    }, [])
-
-    const chatRoomList = chatrooms.map((chatroom, index) => {
-        return (
-            <li key={index}>
-                <Link to={{pathname: `/chatroom/${chatroom.name}}`, state: chatroom}} key={index}>{chatroom.name}</Link>
-            </li>
-        )
+    const query = useQuery(['chatrooms'], async () => {
+        const chatrooms = await ChatroomModel.all()
+        return chatrooms.data.map((chatroom, index) => {
+          return (
+                <li key={index}>
+                    <Link to={{pathname: `/chatroom/${chatroom.name}}`, state: chatroom}} key={index}>{chatroom.name}</Link>
+                </li>
+          )
+        })
     })
+
+    const addMutation = useMutation(newChatroom => ChatroomModel.create({name: newChatroom}), {
+        onSuccess: () => queryClient.invalidateQueries('chatrooms'),
+      })
 
     return (
         <div>
             <h1>Chatrooms</h1>
-            {chatRoomList}
+            {query.data}
             <div>
                 <h4>Create chatroom</h4>
-                <div>
+                <form onSubmit={event => {
+                    event.preventDefault()
+                    addMutation.mutate(newChatroom, {
+                        onSuccess: () => {
+                            setNewChatroom('')
+                        }
+                    })
+                }}> 
                     <input type="text" value={newChatroom} onChange={(text) => handleChange(text)} />
-                    <button onClick={createChatroom} type='submit'>Submit</button>
-                </div>
+                    <button type='submit'>Submit</button>
+                </form>
             </div>
         </div>
     )

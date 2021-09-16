@@ -4,7 +4,7 @@ import SignIn from '../pages/SignIn'
 import Home from '../pages/Home'
 import SignUp from '../pages/SignUp'
 import Chatroom from '../pages/Chatroom'
-import Navbar from '../components/Navbar'
+// import Navbar from '../components/Navbar'
 
 export default (
   <div>
