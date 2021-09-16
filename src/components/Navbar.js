@@ -35,6 +35,7 @@ function Navbar() {
   return (
     <div>
       <button type="submit" onClick={logout}>Logout</button>
+      <button type="submit" onClick={() => history.push('/home')}>Go Back</button>
     </div>
   )
 }

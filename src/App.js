@@ -36,7 +36,7 @@ function App() {
 
   return (
     <div>
-      {user.username !== '' && <button type="submit" onClick={logout}>Logout</button>}
+      <button type="submit" onClick={logout}>Logout</button>
       {Routes}
     </div>
   )

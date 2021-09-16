@@ -13,6 +13,17 @@ class ChatroomModel {
         }
     }
 
+    static show = async (roomId) => {
+        try {
+            const foundChatroom = await axios.get(`${url}/chatrooms/${roomId}`, {
+                method: "GET"
+            })
+            return foundChatroom
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
     static create = async (data) => {
         try {
             const newChatroom = await axios.post(`${url}/chatrooms`, {

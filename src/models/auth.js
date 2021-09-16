@@ -29,7 +29,6 @@ export default class AuthModel {
   static async logout() {
     const res = await fetch(`${url}/auth/logout`, {
       method: 'DELETE',
-      // credentials: 'include',
     })
     return await res.json()
   }
