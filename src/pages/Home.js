@@ -27,7 +27,7 @@ function Home() {
     }
     )
 
-    const addMutation = useMutation(newChatroom => ChatroomModel.create({name: newChatroom}), {
+    const createChatroom = useMutation(newChatroom => ChatroomModel.create({name: newChatroom}), {
         onSuccess: () => queryClient.invalidateQueries('chatrooms'),
     })
 
@@ -46,7 +46,7 @@ function Home() {
                 <h4>Create chatroom</h4>
                 <form onSubmit={event => {
                     event.preventDefault()
-                    addMutation.mutate(newChatroom, {
+                    createChatroom.mutate(newChatroom, {
                         onSuccess: () => {
                             setNewChatroom('')
                         }

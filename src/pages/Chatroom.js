@@ -19,7 +19,6 @@ function Chatroom(props) {
   const { status, data, error, isFetching } = useQuery(['messages'], async () => {
     const chatroom = await ChatroomModel.show(roomId)
     setCurrentChatroom(chatroom.data)
-    console.log(chatroom.data)
     return chatroom.data
   },
   // {refetchInterval: 1000}
@@ -30,11 +29,9 @@ function Chatroom(props) {
   }
   
   
-  const addMutation = useMutation(message => MessageModel.create({message: message, username: currentUser, chatroomId: roomId}), {
+  const createMessage = useMutation(message => MessageModel.create({message: message, username: currentUser, chatroomId: roomId}), {
     onSuccess: () => queryClient.invalidateQueries('messages'),
   })
-  
-  // if (status === 'loading') return <h1>Loading...</h1>
   
   return (
     <div>
@@ -44,7 +41,7 @@ function Chatroom(props) {
         <div className='message-form'>
           <form onSubmit={event => {
               event.preventDefault()
-              addMutation.mutate(message, {
+              createMessage.mutate(message, {
                   onSuccess: () => {
                       setMessage('')
                   }
@@ -56,8 +53,8 @@ function Chatroom(props) {
         </div>
         <div className='messages'>
           <ul className='message-list'>
-            {data.messages.slice(0).reverse().map((msg, index) => (
-              <Message msg={msg} index={index} key={index} roomId={roomId}/>
+            {data && data.messages.slice(0).reverse().map((msg, index) => (
+              <Message msg={msg} key={index} />
             ))}
           </ul>
         </div>
