@@ -19,11 +19,8 @@ function Chatroom(props) {
   const { status, data, error, isFetching } = useQuery(['messages'], async () => {
     const chatroom = await ChatroomModel.show(roomId)
     setCurrentChatroom(chatroom.data)
-    return chatroom.data.messages.slice(0).reverse().map((msg, index) => {
-      return (
-        <Message msg={msg} index={index} key={index} roomId={roomId}/>
-      )
-    })
+    console.log(chatroom.data)
+    return chatroom.data
   },
   // {refetchInterval: 1000}
   )
@@ -37,7 +34,7 @@ function Chatroom(props) {
     onSuccess: () => queryClient.invalidateQueries('messages'),
   })
   
-  if (status === 'loading') return <h1>Loading...</h1>
+  // if (status === 'loading') return <h1>Loading...</h1>
   
   return (
     <div>
@@ -59,7 +56,9 @@ function Chatroom(props) {
         </div>
         <div className='messages'>
           <ul className='message-list'>
-            {data}
+            {data.messages.slice(0).reverse().map((msg, index) => (
+              <Message msg={msg} index={index} key={index} roomId={roomId}/>
+            ))}
           </ul>
         </div>
       </div>

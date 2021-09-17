@@ -18,18 +18,12 @@ function Home() {
         setNewChatroom(e.target.value)
     }
 
-    const { status, data, error, isFetching } = useQuery(['chatrooms'], async () => {
+    const { status, data, error, isFetching } = useQuery('chatrooms', async () => {
         const chatrooms = await ChatroomModel.all()
-        return chatrooms.data.map((chatroom, index) => {
-          return (
-                <li key={index}>
-                    <Link to={`/chatroom/${chatroom._id}`} key={index}>{chatroom.name}</Link>
-                </li>
-          )
-        })
+        return chatrooms.data
     },
     {
-        refetchInterval: 1000
+        // refetchInterval: 1000
     }
     )
 
@@ -43,7 +37,11 @@ function Home() {
     return (
         <div>
             <h1>Chatrooms</h1>
-            {data}
+            {data && data.map(chatroom => (
+                <li key={chatroom._id}>
+                    <Link to={`/chatroom/${chatroom._id}`}>{chatroom.name}</Link>
+                </li>
+            ))}
             <div>
                 <h4>Create chatroom</h4>
                 <form onSubmit={event => {

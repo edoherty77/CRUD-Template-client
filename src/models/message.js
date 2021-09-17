@@ -21,6 +21,17 @@ class MessageModel {
         }
     }
 
+    static show = async (messageId) => {
+        try {
+            const foundMessage = await axios.get(`${url}/messages/${messageId}`, {
+                method: "GET"
+            })
+            return foundMessage
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
     static update = async (data) => {
         try {
             const updatedMessage = await axios.put(`${url}/messages/${data.messageId}`, data)
@@ -30,9 +41,10 @@ class MessageModel {
           }
     }
 
-    static delete = async (data) => {
+    static delete = async (message) => {
+        console.log(message)
         try {
-            await axios.delete(`${url}/messages/${data.roomId}`)
+            await axios.delete(`${url}/messages/${message._id}`)
           } catch (error) {
             console.log(error)
           }
