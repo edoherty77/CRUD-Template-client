@@ -1,0 +1,38 @@
+.chatroom {
+  display: flex;
+  flex-direction: column;
+}
+
+.back-btn {
+  width: 50px;
+}
+
+.chatroom-name {
+  text-align: center;
+}
+
+.message-list {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  align-self: center;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  list-style: none;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px gray solid;
+}
+
+.message-text {
+  font-size: 18px;
+}
+
+.message-username {
+  color: gray;
+  margin-bottom: 5px;
+}

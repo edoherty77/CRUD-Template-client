@@ -30,14 +30,15 @@ function Home() {
     },
     {
         refetchInterval: 1000
-    })
+    }
+    )
 
     const addMutation = useMutation(newChatroom => ChatroomModel.create({name: newChatroom}), {
         onSuccess: () => queryClient.invalidateQueries('chatrooms'),
-      })
+    })
 
 
-      if (status === 'loading') return <h1>Loading...</h1>
+    if (status === 'loading') return <h1>Loading...</h1>
 
     return (
         <div>

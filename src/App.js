@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Routes from './config/Routes'
 import {useHistory } from 'react-router-dom'
+import './index.css'
 import AuthModel from './models/auth'
 
 function App() {

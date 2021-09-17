@@ -12,75 +12,45 @@ function Chatroom(props) {
   const queryClient = useQueryClient()
   const roomId = props.match.params.id
   const [message, setMessage] = useState('')
-  const [messages, setMessages] = useState([])
-  const [room, setRoom] = useState('')
+  const [currentChatroom, setCurrentChatroom] = useState('')
   const currentUser = localStorage.getItem('username')
-
-  const fetchChatroomData = async () => {
-    const chatroomData = await ChatroomModel.show(roomId)
-    console.log(chatroomData)
-    const chatroomMessages = chatroomData.data.messages
-    console.log(chatroomMessages)
-    const name = chatroomData.data.name
-    setRoom(name)
-    setMessages(chatroomMessages)
-    console.log(messages)
-  }
 
   const handleChange = (e) => {
     setMessage(e.target.value)
   }
 
-  const sendMessage = async () => {
-    let arr = messages
-    const obj = {
-      chatroomId: roomId,
-      username: currentUser,
-      message: message
-    }
-    const newMessage = await MessageModel.create(obj)
-    arr.push(newMessage.data)
-    setMessages([...arr])
-    setMessage('')
-    console.log(messages)
-  }
-
-  useEffect(() => {
-    fetchChatroomData()
-  }, [])
-
-  const messagesList = messages.map((msg, index) => {
-    return (
-      <li key={index}>
-        {msg.username} - {msg.message}
-      </li>
-    )
-  })
-
   const { status, data, error, isFetching } = useQuery(['messages'], async () => {
     const chatroom = await ChatroomModel.show(roomId)
+    setCurrentChatroom(chatroom.data)
     return chatroom.data.messages.map((msg, index) => {
       return (
-            <li key={index}>
-                {msg.username} - {msg.message}
-            </li>
+        <li key={index} class='message'>
+          <div class='message-text'>{msg.message}</div>
+          <div class='message-username'>-{msg.username}</div>
+          {currentUser === msg.username && (
+              <div>
+                <button>Edit</button>
+                <button>Delete</button>
+              </div>
+            )}
+        </li>
       )
     })
   },
-  {
-      refetchInterval: 1000
-  }
+  // {refetchInterval: 1000}
   )
 
-  const addMutation = useMutation(newMessage => MessageModel.create({message: message, username: currentUser, chatroomId: roomId}), {
+  const addMutation = useMutation(message => MessageModel.create({message: message, username: currentUser, chatroomId: roomId}), {
     onSuccess: () => queryClient.invalidateQueries('messages'),
   })
 
-
+  if (status === 'loading') return <h1>Loading...</h1>
+  
   return (
-    <div>
-      <h1>{room}</h1>
-      <ul>
+    <div class='chatroom'>
+      <button class='back-btn' onClick={() => props.history.push('/home')}>Back</button>
+      <h1 class='chatroom-name'>{currentChatroom.name}</h1>
+      <ul class='message-list'>
         {data}
       </ul>
       <form onSubmit={event => {

@@ -14,7 +14,8 @@ function SignIn() {
     }
   }
 
-  const signIn = async () => {
+  const signIn = async (e) => {
+    e.preventDefault()
     const userInfo = {username, password}
     try {
       const foundUser = await AuthModel.login(userInfo)
@@ -31,17 +32,17 @@ function SignIn() {
   return (
     <div>
       <h1>Sign In</h1>
-      <div>
-        <div>username:</div>
-        <input type="text" onChange={text => handleChange(text, 'username')} value={username}/>
-      </div>
-      <div>
-        <div>password:</div>
-        <input type="text" onChange={text => handleChange(text, 'password')} value={password}/>
-      </div>
-      <div>
-        <button onClick={signIn}>Sign In</button>
-      </div>
+      <form onSubmit={signIn}>
+        <div>
+          <div>username:</div>
+          <input type="text" onChange={text => handleChange(text, 'username')} value={username}/>
+        </div>
+        <div>
+          <div>password:</div>
+          <input type="text" onChange={text => handleChange(text, 'password')} value={password}/>
+        </div>
+        <button type='submit'>Sign In</button>
+      </form>
       <div>Not a member? <Link to='/signup'>Sign Up</Link></div>
     </div>
   )
