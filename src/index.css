@@ -1,21 +1,33 @@
 .chatroom {
   display: flex;
+  /* align-items: center; */
+  justify-content: space-evenly;
+  height: 90vh;
+  margin-top: 50px;
+}
+
+.chatroom-name {
+  text-align: center
+}
+
+.messages {
+  display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-self: start;
 }
 
 .back-btn {
   width: 50px;
-}
-
-.chatroom-name {
-  text-align: center;
+  align-self: flex-start;
 }
 
 .message-list {
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   width: 400px;
-  align-self: center;
+  /* top: 400px; */
 }
 
 .message {
@@ -35,4 +47,11 @@
 .message-username {
   color: gray;
   margin-bottom: 5px;
+}
+
+.message-form {
+  display: flex;
+  align-items: flex-start;
+  /* margin-top: 50px; */
+  height: 90vh;
 }

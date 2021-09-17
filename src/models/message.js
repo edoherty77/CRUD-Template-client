@@ -20,6 +20,23 @@ class MessageModel {
             console.log(err)
         }
     }
+
+    static update = async (data) => {
+        try {
+            const updatedMessage = await axios.put(`${url}/messages/${data.messageId}`, data)
+            return updatedMessage
+          } catch (error) {
+            console.log(error)
+          }
+    }
+
+    static delete = async (data) => {
+        try {
+            await axios.delete(`${url}/messages/${data.roomId}`)
+          } catch (error) {
+            console.log(error)
+          }
+    }
 }
 
 export default MessageModel
