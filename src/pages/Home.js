@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import React, {useState} from 'react'
+import { Link } from 'react-router-dom'
 
 import {
     useQuery,
@@ -18,25 +18,31 @@ function Home() {
         setNewChatroom(e.target.value)
     }
 
-    const query = useQuery(['chatrooms'], async () => {
+    const { status, data, error, isFetching } = useQuery(['chatrooms'], async () => {
         const chatrooms = await ChatroomModel.all()
         return chatrooms.data.map((chatroom, index) => {
           return (
                 <li key={index}>
-                    <Link to={{pathname: `/chatroom/${chatroom.name}}`, state: chatroom}} key={index}>{chatroom.name}</Link>
+                    <Link to={`/chatroom/${chatroom._id}`} key={index}>{chatroom.name}</Link>
                 </li>
           )
         })
+    },
+    {
+        refetchInterval: 1000
     })
 
     const addMutation = useMutation(newChatroom => ChatroomModel.create({name: newChatroom}), {
         onSuccess: () => queryClient.invalidateQueries('chatrooms'),
       })
 
+
+      if (status === 'loading') return <h1>Loading...</h1>
+
     return (
         <div>
             <h1>Chatrooms</h1>
-            {query.data}
+            {data}
             <div>
                 <h4>Create chatroom</h4>
                 <form onSubmit={event => {

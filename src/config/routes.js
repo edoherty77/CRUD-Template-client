@@ -24,7 +24,7 @@ export default (
         render={(propsRouter) => <SignUp {...propsRouter} />}
       />
       <Route
-        path="/chatroom/:name"
+        path="/chatroom/:id"
         render={(propsRouter) => <Chatroom {...propsRouter} />}
       />
     </Switch>

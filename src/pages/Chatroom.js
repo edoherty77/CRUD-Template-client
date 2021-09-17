@@ -2,16 +2,27 @@ import React, {useState, useEffect} from 'react'
 import MessageModel from '../models/message'
 import ChatroomModel from '../models/chatroom'
 
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+} from 'react-query'
+
 function Chatroom(props) {
-  const currentChatroom = props.location.state
+  const queryClient = useQueryClient()
+  const roomId = props.match.params.id
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState([])
+  const [room, setRoom] = useState('')
   const currentUser = localStorage.getItem('username')
 
   const fetchChatroomData = async () => {
-    const chatroomData = await ChatroomModel.show(currentChatroom._id)
+    const chatroomData = await ChatroomModel.show(roomId)
+    console.log(chatroomData)
     const chatroomMessages = chatroomData.data.messages
     console.log(chatroomMessages)
+    const name = chatroomData.data.name
+    setRoom(name)
     setMessages(chatroomMessages)
     console.log(messages)
   }
@@ -23,7 +34,7 @@ function Chatroom(props) {
   const sendMessage = async () => {
     let arr = messages
     const obj = {
-      chatroomId: currentChatroom._id,
+      chatroomId: roomId,
       username: currentUser,
       message: message
     }
@@ -36,7 +47,6 @@ function Chatroom(props) {
 
   useEffect(() => {
     fetchChatroomData()
-    console.log(currentChatroom)
   }, [])
 
   const messagesList = messages.map((msg, index) => {
@@ -47,16 +57,43 @@ function Chatroom(props) {
     )
   })
 
+  const { status, data, error, isFetching } = useQuery(['messages'], async () => {
+    const chatroom = await ChatroomModel.show(roomId)
+    return chatroom.data.messages.map((msg, index) => {
+      return (
+            <li key={index}>
+                {msg.username} - {msg.message}
+            </li>
+      )
+    })
+  },
+  {
+      refetchInterval: 1000
+  }
+  )
+
+  const addMutation = useMutation(newMessage => MessageModel.create({message: message, username: currentUser, chatroomId: roomId}), {
+    onSuccess: () => queryClient.invalidateQueries('messages'),
+  })
+
+
   return (
     <div>
-      <h1>{currentChatroom.name}</h1>
+      <h1>{room}</h1>
       <ul>
-        {messagesList}
+        {data}
       </ul>
-      <div>
+      <form onSubmit={event => {
+          event.preventDefault()
+          addMutation.mutate(message, {
+              onSuccess: () => {
+                  setMessage('')
+              }
+          })
+        }}> 
         <input type="text" value={message} onChange={text => handleChange(text)}/>
-        <button type="submit" onClick={sendMessage}>Send</button>
-      </div>
+        <button type="submit">Send</button>
+      </form>
     </div>
   )
 }
